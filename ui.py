@@ -15,7 +15,7 @@ class TestYandex:
         driver.wait = WebDriverWait(driver, 5)
 
         driver.get("http://yandex.ru")
-        search_field = driver.find_element_by_xpath("//input[@id='text']")
+        search_field = driver.wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@id='text']")))
         search_field.send_keys("погода")
         search_field.submit()
 
