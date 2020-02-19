@@ -11,32 +11,23 @@ from selenium.common.exceptions import ElementNotVisibleException
 
 class TestYandex:
 
-    def init_driver(self):
-        self.driver = webdriver.Chrome('./chromedriver')
-        self.driver.wait = WebDriverWait(self.driver, 5)
-        return self.driver
+    url = 'http://yandex.ru'
+    driver = webdriver.Chrome('./chromedriver')
+    driver.wait = WebDriverWait(driver, 5)
 
-    def lookup(self, driver, url, query):
-        driver.get(url)
-        try:
-            box = driver.wait.until(EC.presence_of_element_located(
-                (By.NAME, "q")))
-            button = driver.wait.until(EC.element_to_be_clickable(
-                (By.NAME, "btnK")))
-            box.send_keys(query)
-            try:
-                button.click()
-            except ElementNotVisibleException:
-                button = driver.wait.until(EC.visibility_of_element_located(
-                    (By.NAME, "btnG")))
-                button.click()
-        except TimeoutException:
-            print("Box or Button not found in google.com")
+    def lookup(self, query):
+        self.driver.get(self.url)
+        search_field = self.driver.wait.until(EC.visibility_of_element_located(
+            (By.XPATH, "//input[@id='text']")))
+        search_field.send_keys(query)
+        search_res = self.driver.wait.until(EC.visibility_of_element_located((By.XPATH, "//li[1]//span[1]//b[1]")))
+        print()
 
     def test_yandex(self):
+        self.lookup('погода')
 
-        driver = self.init_driver()
-        self.lookup(driver, 'http://yandex.ru', 'погода')
+        self.driver.quit()
+
 
 
         # driver.get("http://yandex.ru")
@@ -49,9 +40,18 @@ class TestYandex:
         # #     search_field.send_keys('погода')
         # # except TimeoutException:
         # #     print("Box or Button not found in google.com")
-        driver.quit()
 
-
-
-
-
+    #     button = self.driver.wait.until(EC.element_to_be_clickable(
+    #         (By.NAME, "btnK")))
+    #     box.send_keys(query)
+    #
+    #     try:
+    #         button.click()
+    #     except ElementNotVisibleException:
+    #         button = driver.wait.until(EC.visibility_of_element_located(
+    #             (By.NAME, "btnG")))
+    #         button.click()
+    #
+    #
+    # except TimeoutException:
+    # print("Box or Button not found in google.com")
