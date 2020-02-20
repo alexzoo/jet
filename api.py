@@ -32,9 +32,3 @@ class TestHH:
         assert_that(r.json(), has_items(anything(vacancy_label)))
         assert_that(r.json(), has_items(anything(vacancy_type)))
         assert_that(r.json(), has_items(anything(vacancy_relation)))
-
-
-class TestBin:
-    bin_url = 'https://httpbin.org/put'
-
-    # test data
